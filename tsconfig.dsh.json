@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist-dsh",
+    "jsx": "react-jsx",
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "cordis": [
+        "./node_modules/@deepseek-ai/cordis/lib/index.d.ts"
+      ],
+      "@deepseek-ai/dsh-session": [
+        "./node_modules/@deepseek-ai/dsh-session/src/index.ts"
+      ]
+    },
+    "rootDir": "."
+  },
+  "include": [
+    "src/dsh/**/*.ts",
+    "src/dsh/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts"
+  ]
+}

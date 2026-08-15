@@ -1,9 +1,33 @@
 {
-  "name": "@tencent-weixin/openclaw-weixin",
-  "version": "2.4.6",
-  "description": "OpenClaw Weixin channel",
+  "name": "openclaw-weixin-dsh",
+  "version": "0.1.0",
+  "description": "OpenClaw Weixin channel plugin + DeepSeek Harness (DSH) adapter. dsh-plugin: run WeChat through DSH agents with a control panel in DSH Settings.",
   "license": "MIT",
-  "author": "Tencent",
+  "author": "Tencent (forked by dsh-plugin contributors)",
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "openclaw",
+    "weixin",
+    "wechat",
+    "channel",
+    "plugin",
+    "wechat-bot"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tencent-weixin/openclaw-weixin.git"
+  },
+  "homepage": "https://github.com/tencent-weixin/openclaw-weixin/blob/main/docs/dsh.md",
+  "bugs": {
+    "url": "https://github.com/tencent-weixin/openclaw-weixin/issues"
+  },
+  "dsh": {
+    "plugin": true,
+    "adapter": "./dsh",
+    "pluginType": "channel",
+    "panel": "settings.section#weixin"
+  },
   "type": "module",
   "files": [
     "src/",
@@ -12,6 +36,8 @@
     "index.ts",
     "openclaw.plugin.json",
     "dist/",
+    "dist-dsh/",
+    "docs/",
     "README.md",
     "README.zh_CN.md",
     "CHANGELOG.md",
@@ -20,9 +46,24 @@
   "scripts": {
     "test": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
+    "typecheck:dsh": "tsc -p tsconfig.dsh.json --noEmit",
+    "build:dsh": "tsc -p tsconfig.dsh.json",
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
     "build": "npm run clean && tsc",
-    "prepublishOnly": "npm run typecheck && npm run build"
+    "publish:dsh": "npm publish --tag dsh-plugin",
+    "prepublishOnly": "npm run typecheck:dsh && npm run build:dsh"
+  },
+  "exports": {
+    ".": "./index.ts",
+    "./dsh": {
+      "types": "./dist-dsh/src/dsh/plugin.d.ts",
+      "default": "./dist-dsh/src/dsh/plugin.js"
+    },
+    "./dsh/client": {
+      "types": "./dist-dsh/src/dsh/client.d.ts",
+      "default": "./dist-dsh/src/dsh/client.js"
+    },
+    "./package.json": "./package.json"
   },
   "engines": {
     "node": ">=22"
@@ -32,13 +73,36 @@
     "zod": "^4.3.6"
   },
   "peerDependencies": {
-    "openclaw": ">=2026.5.12"
+    "openclaw": ">=2026.5.12",
+    "@deepseek-ai/dsh-session": "*",
+    "@deepseek-ai/dsh-typert-protocol": "*",
+    "cordis": "*",
+    "react": "*"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh-session": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-typert-protocol": {
+      "optional": true
+    },
+    "cordis": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
   },
   "devDependencies": {
+    "@deepseek-ai/cordis": "4.0.1",
+    "@deepseek-ai/dsh-session": "0.1.0-rc.5",
+    "@types/node": "^22.20.0",
+    "@types/react": "^18.3.31",
     "@vitest/coverage-v8": "^3.1.0",
     "openclaw": "2026.5.12",
+    "react": "^18.3.1",
     "silk-wasm": "^3.7.1",
-    "typescript": "^5.8.0",
+    "typescript": "^6.0.3",
     "vitest": "^3.1.0"
   },
   "openclaw": {

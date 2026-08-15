@@ -2,6 +2,9 @@
 
 [简体中文](./README.zh_CN.md)
 
+[![dsh-plugin](https://img.shields.io/badge/dsh--plugin-DeepSeek%20Harness-4e5aa8)](docs/dsh.md)
+[![npm](https://img.shields.io/npm/v/openclaw-weixin-dsh?label=npm%40dsh-plugin)](https://www.npmjs.com/package/openclaw-weixin-dsh)
+
 OpenClaw's WeChat channel plugin, supporting login authorization via QR code scanning.
 
 ## Compatibility
@@ -349,3 +352,23 @@ Ensure `plugins.entries.openclaw-weixin.enabled` is `true` in `~/.openclaw/openc
 openclaw config set plugins.entries.openclaw-weixin.enabled true
 openclaw gateway restart
 ```
+
+---
+
+## DeepSeek Harness integration (`src/dsh/`)
+
+This branch keeps the OpenClaw plugin entry (`index.ts`) intact and adds a DSH
+adapter under `src/dsh/`: WeChat messages are handled by DeepSeek Harness
+Agents/Sessions, with a dedicated **WeChat control panel** in DSH Settings
+(account QR login, monitor start/stop, agent routing, allowlist approval,
+message log, configuration).
+
+- Architecture & modules: [`docs/dsh.md`](docs/dsh.md), `src/dsh/README.md`
+- Build & typecheck: `npm run build:dsh` / `npm run typecheck:dsh`
+- Host plugin entry: `./dsh` export (`dist-dsh/src/dsh/plugin.js`)
+- Dependencies (`@deepseek-ai/dsh-session`, `cordis`, `react`, …) are optional
+  peers; the OpenClaw side is unaffected.
+
+> Note: `src/dsh/client.tsx` is a reference port of the verified dynamic-plugin
+> prototype; for real-package mounting follow the "Client wiring" section in
+> `docs/dsh.md` (`connection.api.weixin.*` via TypertRemoteService).

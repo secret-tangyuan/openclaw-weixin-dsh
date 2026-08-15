@@ -2,6 +2,9 @@
 
 [English](./README.md)
 
+[![dsh-plugin](https://img.shields.io/badge/dsh--plugin-DeepSeek%20Harness-4e5aa8)](docs/dsh.md)
+[![npm](https://img.shields.io/npm/v/openclaw-weixin-dsh?label=npm%40dsh-plugin)](https://www.npmjs.com/package/openclaw-weixin-dsh)
+
 OpenClaw 的微信渠道插件，支持通过扫码完成登录授权。
 
 ## 兼容性
@@ -345,3 +348,21 @@ openclaw plugins install @tencent-weixin/openclaw-weixin@legacy
 openclaw config set plugins.entries.openclaw-weixin.enabled true
 openclaw gateway restart
 ```
+
+---
+
+## DeepSeek Harness 集成（DSH 适配层）
+
+本分支在保留 OpenClaw 插件入口的同时，新增 `src/dsh/` 适配层，使微信消息
+由 DeepSeek Harness 的 Agent/Session 处理并回复，并在 DSH **设置**中提供
+独立的「微信 (WeChat)」控制面板（账号扫码登录、监控启停、Agent 路由、
+白名单、消息日志、配置）。
+
+- 架构与模块说明：[`docs/dsh.md`](docs/dsh.md)、`src/dsh/README.md`
+- 构建与类型检查：`npm run build:dsh` / `npm run typecheck:dsh`
+- Host 插件入口：`./dsh` 导出（`dist-dsh/src/dsh/plugin.js`）
+- 依赖：`@deepseek-ai/dsh-session`、`cordis`、`react` 等为 optional peer，
+  不影响 OpenClaw 侧安装与运行
+
+> 说明：`src/dsh/client.tsx` 为从已验证的动态插件原型移植的参考实现，
+> 落库为真实包时按 `docs/dsh.md` 的「Client 接线」改为 `connection.api.*` 标准接线。

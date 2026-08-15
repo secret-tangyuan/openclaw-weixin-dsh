@@ -9,3 +9,6 @@ coverage/
 openclaw/
 pnpm-lock.yaml
 pnpm-workspace.yaml
+
+# DSH adapter build
+/dist-dsh/
